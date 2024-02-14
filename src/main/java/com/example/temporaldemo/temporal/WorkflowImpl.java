@@ -25,6 +25,7 @@ public class WorkflowImpl implements WorkFlow{
     @Override
     public void startApprovalWorkflow() {
         activity.placeOrder();
+
         System.out.println("*****Waiting for Restaurant to confirm your order");
         Workflow.await(() -> isOrderAccepted);
         System.out.println("*****please wait till we assign a delivery executive");

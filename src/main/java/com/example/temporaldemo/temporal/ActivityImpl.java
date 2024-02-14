@@ -1,6 +1,6 @@
 package com.example.temporaldemo.temporal;
 
-public class AcivityImpl implements Activity{
+public class ActivityImpl implements Activity{
     @Override
     public void placeOrder() {
         System.out.println("*****order has been placed");

@@ -5,7 +5,9 @@ import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OrderService {
     @Autowired
     WorkflowServiceStubs workflowServiceStubs;
@@ -18,8 +20,17 @@ public class OrderService {
         WorkflowClient.start(workflow::startApprovalWorkflow);
     }
     public void makeOrderAccepted(String workflowId){
+        WorkFlow workflow = workflowClient
+                .newWorkflowStub(WorkFlow.class, "Order_" +workflowId);
+        workflow.signalOrderAccepted();
+    }
+    public void makeOrderPickedUp(String workflowId){
         WorkFlow workflow = workflowClient.newWorkflowStub(WorkFlow.class, "Order_" +workflowId);
-        WorkFlow.signalOrderAccepted();
+        workflow.signalOrderPickup();
+    }
+    public void makeOrderDelivered(String workflowId){
+        WorkFlow workflow = workflowClient.newWorkflowStub(WorkFlow.class, "Order_" +workflowId);
+        workflow.signalOrderDelivered();
     }
     public WorkFlow createWorkFlowConnection(String id){
         WorkflowOptions options = WorkflowOptions.newBuilder().setTaskQueue(WorkFlow.QUEUE_NAME).setWorkflowId("Order_" + id).build();
